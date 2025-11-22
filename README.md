@@ -51,15 +51,36 @@ A modern Unturned RocketMod plugin that fetches player statistics from PlayerSta
    ```
    YourServer/
    ├── Rocket/
-   │   └── Plugins/
-   │       └── ICN.Leaderboards.dll  ← Place here
+   │   ├── Plugins/
+   │   │   └── ICN.Leaderboards.dll  ← Main plugin only
+   │   └── Libraries/
+   │       ├── MySql.Data.dll  ← MySQL dependencies (required)
+   │       ├── BouncyCastle.Crypto.dll
+   │       ├── Google.Protobuf.dll
+   │       ├── K4os.Compression.LZ4.dll
+   │       ├── K4os.Compression.LZ4.Streams.dll
+   │       ├── K4os.Hash.xxHash.dll
+   │       └── Newtonsoft.Json.dll  ← If needed (RocketMod usually has this)
    ```
 
-3. **Start** your server to generate the default configuration
+3. **Dependencies:**
+   - **MySQL Dependencies (Required)**: Copy these to `Rocket/Libraries/`:
+     - MySql.Data.dll
+     - BouncyCastle.Crypto.dll
+     - Google.Protobuf.dll
+     - K4os.Compression.LZ4.dll
+     - K4os.Compression.LZ4.Streams.dll
+     - K4os.Hash.xxHash.dll
+   - **Newtonsoft.Json.dll**: Usually already in `Rocket/Libraries/` from RocketMod
+   - **IMPORTANT**: All dependencies go in `Rocket/Libraries/` (NOT Plugins folder!)
+   - **Never** put dependencies in the Plugins folder
+   - See [INSTALLATION.md](INSTALLATION.md) for detailed instructions
 
-4. **Configure** your settings (see Configuration section)
+4. **Start** your server to generate the default configuration
 
-5. **Reload** or restart your server
+5. **Configure** your settings (see Configuration section)
+
+6. **Reload** or restart your server
 
 ---
 
