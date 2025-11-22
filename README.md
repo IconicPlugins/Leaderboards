@@ -336,9 +336,11 @@ When the plugin loads successfully:
 ╔═══════════════════════════════════════╗
 ║   Leaderboards by Iconic Plugins      ║
 ╚═══════════════════════════════════════╝
-ICN.Leaderboards loading...
 Successfully connected to MySQL database.
-ICN.Leaderboards loaded!
+ICN.Leaderboards loaded successfully!
+Leaderboard count: 10
+Sort by: Kills
+Auto-post interval: 30 minutes
 ```
 
 When posting a leaderboard:

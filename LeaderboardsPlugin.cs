@@ -20,7 +20,11 @@ namespace ICN.Leaderboards
         protected override void Load()
         {
             Instance = this;
-            Logger.Log("ICN.Leaderboards loading...");
+            
+            // Cool loading banner
+            Logger.Log("╔═══════════════════════════════════════╗");
+            Logger.Log("║   Leaderboards by Iconic Plugins      ║");
+            Logger.Log("╚═══════════════════════════════════════╝");
 
             DatabaseProvider = new MySQLDatabaseProvider(Configuration.Instance.MySQLConnectionString);
             WebhookSender = new DiscordWebhookSender(Configuration.Instance.WebhookUrl);
@@ -35,12 +39,15 @@ namespace ICN.Leaderboards
                     Logger.LogWarning("Failed to connect to MySQL database. Check your connection string.");
             });
 
-            Logger.Log("ICN.Leaderboards loaded!");
+            Logger.Log("ICN.Leaderboards loaded successfully!");
+            Logger.Log($"Leaderboard count: {Configuration.Instance.LeaderboardCount}");
+            Logger.Log($"Sort by: {Configuration.Instance.LeaderboardSortBy}");
+            Logger.Log($"Auto-post interval: {Configuration.Instance.AutoPostIntervalMinutes} minutes");
         }
 
         protected override void Unload()
         {
-            Logger.Log("ICN.Leaderboards unloaded!");
+            Logger.Log("ICN.Leaderboards unloaded successfully!");
             _autoPostTimer = 0f;
             Instance = null;
         }
