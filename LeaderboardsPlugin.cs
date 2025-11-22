@@ -6,6 +6,7 @@ using ICN.Leaderboards.Models;
 using System.Threading.Tasks;
 using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
+using SDG.Unturned;
 
 namespace ICN.Leaderboards
 {
@@ -25,6 +26,8 @@ namespace ICN.Leaderboards
             Logger.Log("╔═══════════════════════════════════════╗");
             Logger.Log("║   Leaderboards by Iconic Plugins      ║");
             Logger.Log("╚═══════════════════════════════════════╝");
+            Logger.Log($"Licensed to: {Provider.serverName}");
+            Logger.Log("Copyright © 2025 Iconic Plugins. All Rights Reserved.");
 
             DatabaseProvider = new MySQLDatabaseProvider(Configuration.Instance.MySQLConnectionString);
             WebhookSender = new DiscordWebhookSender(Configuration.Instance.WebhookUrl);

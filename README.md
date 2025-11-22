@@ -336,6 +336,8 @@ When the plugin loads successfully:
 ╔═══════════════════════════════════════╗
 ║   Leaderboards by Iconic Plugins      ║
 ╚═══════════════════════════════════════╝
+Licensed to: Your Server Name
+Copyright © 2025 Iconic Plugins. All Rights Reserved.
 Successfully connected to MySQL database.
 ICN.Leaderboards loaded successfully!
 Leaderboard count: 10

@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\ORProtection\lib\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Rocket.API">
       <HintPath>..\ORProtection\lib\Rocket.API.dll</HintPath>
       <Private>False</Private>
