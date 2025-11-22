@@ -109,7 +109,7 @@ Rocket/Plugins/ICN.Leaderboards/ICN.Leaderboards.configuration.xml
   <ShowPlaytime>false</ShowPlaytime>
   
   <!-- Auto-posting interval in minutes (0 = disabled) -->
-  <AutoPostIntervalMinutes>0</AutoPostIntervalMinutes>
+  <AutoPostIntervalMinutes>30</AutoPostIntervalMinutes>
   
   <!-- Discord embed color (hex code) -->
   <EmbedColor>#FFD700</EmbedColor>
@@ -128,7 +128,7 @@ Rocket/Plugins/ICN.Leaderboards/ICN.Leaderboards.configuration.xml
 | `ShowKDRatio` | bool | true | Display K/D ratio in leaderboard |
 | `ShowAccuracy` | bool | true | Display headshot accuracy percentage |
 | `ShowPlaytime` | bool | false | Display total playtime |
-| `AutoPostIntervalMinutes` | int | 0 | Auto-post interval (0 = disabled) |
+| `AutoPostIntervalMinutes` | int | 30 | Auto-post interval (0 = disabled, 30 = every 30 mins) |
 | `EmbedColor` | string | "#FFD700" | Hex color code for Discord embed |
 
 ### Sort Options

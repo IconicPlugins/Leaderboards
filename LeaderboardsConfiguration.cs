@@ -25,7 +25,7 @@ namespace ICN.Leaderboards
             ShowKDRatio = true;
             ShowAccuracy = true;
             ShowPlaytime = false;
-            AutoPostIntervalMinutes = 0;
+            AutoPostIntervalMinutes = 30; // Auto-post every 30 minutes
             EmbedColor = "#FFD700"; // Gold
         }
     }

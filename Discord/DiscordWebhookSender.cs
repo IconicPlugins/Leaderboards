@@ -82,7 +82,12 @@ namespace ICN.Leaderboards.Discord
                     }
                 };
 
-                string jsonPayload = JsonConvert.SerializeObject(payload);
+                // Serialize with proper UTF-8 encoding for emoji support
+                string jsonPayload = JsonConvert.SerializeObject(payload, new JsonSerializerSettings
+                {
+                    StringEscapeHandling = StringEscapeHandling.Default
+                });
+                
                 var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
                 var response = await _httpClient.PostAsync(_webhookUrl, content);
