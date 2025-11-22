@@ -1,7 +1,6 @@
 using Rocket.API;
 using Rocket.Unturned.Chat;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ICN.Leaderboards.Commands
@@ -35,19 +34,16 @@ namespace ICN.Leaderboards.Commands
 
             UnturnedChat.Say(caller, "Posting leaderboard to Discord...", Color.cyan);
             
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    await LeaderboardsPlugin.Instance.PostLeaderboardAsync();
-                    UnturnedChat.Say(caller, "Leaderboard posted to Discord successfully!", Color.green);
-                }
-                catch (System.Exception ex)
-                {
-                    UnturnedChat.Say(caller, "Failed to post leaderboard. Check console for details.", Color.red);
-                    Rocket.Core.Logging.Logger.LogException(ex);
-                }
-            });
+                LeaderboardsPlugin.Instance.PostLeaderboard();
+                UnturnedChat.Say(caller, "Leaderboard posted to Discord successfully!", Color.green);
+            }
+            catch (System.Exception ex)
+            {
+                UnturnedChat.Say(caller, "Failed to post leaderboard. Check console for details.", Color.red);
+                Rocket.Core.Logging.Logger.LogError($"Error in /postleaderboard command: {ex.Message}");
+            }
         }
     }
 }

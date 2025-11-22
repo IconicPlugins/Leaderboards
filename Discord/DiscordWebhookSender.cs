@@ -1,125 +1,157 @@
-using ICN.Leaderboards.Models;
 using Newtonsoft.Json;
-using Rocket.Core.Logging;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using ICN.Leaderboards.Models;
 
 namespace ICN.Leaderboards.Discord
 {
     public class DiscordWebhookSender
     {
         private readonly string _webhookUrl;
-        private static readonly HttpClient _httpClient = new HttpClient();
 
         public DiscordWebhookSender(string webhookUrl)
         {
             _webhookUrl = webhookUrl;
         }
 
-        public async Task SendLeaderboardAsync(List<PlayerStats> players, LeaderboardsConfiguration config)
+        public void SendLeaderboard(List<PlayerStats> players, string sortBy, bool showKD, bool showAccuracy, bool showPlaytime, string embedColor, ref string lastMessageId)
         {
-            if (string.IsNullOrEmpty(_webhookUrl) || _webhookUrl == "https://discord.com/api/webhooks/your_webhook_url")
-            {
-                Logger.LogWarning("Discord Webhook URL is not configured. Please set a valid webhook URL in the configuration.");
-                return;
-            }
-
-            if (players == null || players.Count == 0)
-            {
-                Logger.LogWarning("No players to display in leaderboard.");
-                return;
-            }
-
             try
             {
-                StringBuilder description = new StringBuilder();
-                int rank = 1;
-                
-                foreach (var player in players)
+                if (string.IsNullOrEmpty(_webhookUrl))
                 {
-                    string medal = GetMedalEmoji(rank);
-                    description.AppendLine($"**{medal} {EscapeMarkdown(player.PlayerName)}**");
-                    
-                    StringBuilder statsLine = new StringBuilder();
-                    statsLine.Append($"⚔️ Kills: **{player.Kills}** | ☠️ Deaths: **{player.Deaths}**");
-                    
-                    if (config.ShowKDRatio)
-                        statsLine.Append($" | 📊 K/D: **{player.KDRatio}**");
-                    
-                    statsLine.Append($" | 🎯 HS: **{player.Headshots}**");
-                    
-                    if (config.ShowAccuracy)
-                        statsLine.Append($" | 🎯 Acc: **{player.Accuracy:F1}%**");
-                    
-                    if (config.ShowPlaytime)
-                        statsLine.Append($" | ⏱️ Time: **{player.FormattedPlaytime}**");
-                    
-                    description.AppendLine(statsLine.ToString());
-                    
-                    if (rank < players.Count)
-                        description.AppendLine();
-                    
-                    rank++;
+                    Rocket.Core.Logging.Logger.LogWarning("Discord webhook URL is not configured.");
+                    return;
                 }
 
-                int embedColor = ParseHexColor(config.EmbedColor);
+                if (players == null || players.Count == 0)
+                {
+                    Rocket.Core.Logging.Logger.LogWarning("No players to display in leaderboard.");
+                    return;
+                }
+
+                // Parse embed color
+                int color = ParseHexColor(embedColor);
+
+                // Build rich description with better formatting for PVP
+                var description = new StringBuilder();
+                
+                for (int i = 0; i < players.Count; i++)
+                {
+                    var player = players[i];
+                    string medal = i == 0 ? "🥇" : i == 1 ? "🥈" : i == 2 ? "🥉" : $"**{i + 1}.**";
+                    
+                    // Escape markdown special characters
+                    string safeName = EscapeMarkdown(player.PlayerName);
+                    
+                    // Player name with medal
+                    description.AppendLine($"{medal} **{safeName}**");
+                    
+                    // First row: PVP stats
+                    description.Append($"⚔️ Kills: **{player.Kills}** | ☠️ Deaths: **{player.Deaths}**");
+                    
+                    if (showKD)
+                        description.Append($" | 📊 K/D: **{player.KDRatio:F2}**");
+                    
+                    description.AppendLine(); // New line after first row
+                    
+                    // Second row: Headshots, accuracy, and zombie kills
+                    description.Append($"🎯 HS: **{player.Headshots}**");
+                    
+                    if (showAccuracy)
+                        description.Append($" | 🎯 Acc: **{player.Accuracy:F1}%**");
+                    
+                    // Always show zombie kills for PVP servers
+                    description.Append($" | 🧟 Zombies: **{player.Zombies}**");
+                    
+                    if (showPlaytime)
+                        description.Append($" | ⏱️ Time: **{player.FormattedPlaytime}**");
+                    
+                    description.AppendLine();
+                    
+                    // Add spacing between players (except last one)
+                    if (i < players.Count - 1)
+                        description.AppendLine();
+                }
+
+                var embed = new
+                {
+                    title = "🏆 Top Players Leaderboard 🏆",
+                    description = description.ToString(),
+                    color = color,
+                    footer = new
+                    {
+                        text = $"Sorted by {sortBy} • Unturned Leaderboards"
+                    },
+                    timestamp = DateTime.UtcNow.ToString("o")
+                };
 
                 var payload = new
                 {
-                    embeds = new[]
-                    {
-                        new
-                        {
-                            title = "🏆 Top Players Leaderboard 🏆",
-                            description = description.ToString(),
-                            color = embedColor,
-                            footer = new { text = $"Sorted by {config.LeaderboardSortBy} • Unturned Leaderboards" },
-                            timestamp = DateTime.UtcNow.ToString("o")
-                        }
-                    }
+                    embeds = new[] { embed }
                 };
 
-                // Serialize with proper UTF-8 encoding for emoji support
-                string jsonPayload = JsonConvert.SerializeObject(payload, new JsonSerializerSettings
+                // Serialize with proper encoding
+                string json = JsonConvert.SerializeObject(payload, new JsonSerializerSettings
                 {
                     StringEscapeHandling = StringEscapeHandling.Default
                 });
-                
-                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync(_webhookUrl, content);
-                
-                if (response.IsSuccessStatusCode)
+                using (var client = new WebClient())
                 {
-                    Logger.Log($"Leaderboard sent to Discord successfully. ({players.Count} players)");
+                    client.Encoding = Encoding.UTF8;
+                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    
+                    // Check if we should edit existing message or create new one
+                    if (!string.IsNullOrEmpty(lastMessageId))
+                    {
+                        try
+                        {
+                            // Edit existing message using PATCH
+                            string editUrl = $"{_webhookUrl}/messages/{lastMessageId}";
+                            client.UploadString(editUrl, "PATCH", json);
+                            Rocket.Core.Logging.Logger.Log($"Leaderboard updated in Discord. ({players.Count} players) [Edited Message ID: {lastMessageId}]");
+                            return;
+                        }
+                        catch (Exception editEx)
+                        {
+                            Rocket.Core.Logging.Logger.LogWarning($"Failed to edit message (ID: {lastMessageId}), creating new one: {editEx.Message}");
+                            lastMessageId = ""; // Reset so we create a new message
+                        }
+                    }
+                    
+                    // Create new message with wait=true to get message ID
+                    string webhookUrlWithWait = _webhookUrl.Contains("?") ? $"{_webhookUrl}&wait=true" : $"{_webhookUrl}?wait=true";
+                    string response = client.UploadString(webhookUrlWithWait, json);
+                    
+                    // Parse response to get message ID using JObject
+                    try
+                    {
+                        var responseObj = Newtonsoft.Json.Linq.JObject.Parse(response);
+                        string messageId = responseObj["id"]?.ToString();
+                        
+                        if (!string.IsNullOrEmpty(messageId))
+                        {
+                            lastMessageId = messageId; // Store for future edits
+                            Rocket.Core.Logging.Logger.Log($"Leaderboard sent to Discord successfully. ({players.Count} players) [Message ID: {messageId}]");
+                        }
+                        else
+                        {
+                            Rocket.Core.Logging.Logger.Log($"Leaderboard sent to Discord successfully. ({players.Count} players)");
+                        }
+                    }
+                    catch
+                    {
+                        Rocket.Core.Logging.Logger.Log($"Leaderboard sent to Discord successfully. ({players.Count} players)");
+                    }
                 }
-                else
-                {
-                    Logger.LogWarning($"Discord webhook returned status code: {response.StatusCode}");
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                Logger.LogException(ex, "Network error sending leaderboard to Discord.");
             }
             catch (Exception ex)
             {
-                Logger.LogException(ex, "Error sending leaderboard to Discord.");
+                Rocket.Core.Logging.Logger.LogError($"Failed to send Discord webhook: {ex.Message}");
             }
-        }
-
-        private string GetMedalEmoji(int rank)
-        {
-            return rank switch
-            {
-                1 => "🥇",
-                2 => "🥈",
-                3 => "🥉",
-                _ => $"**#{rank}**"
-            };
         }
 
         private string EscapeMarkdown(string text)
@@ -145,7 +177,7 @@ namespace ICN.Leaderboards.Discord
             }
             catch
             {
-                Logger.LogWarning($"Invalid hex color '{hexColor}', using default gold color.");
+                Rocket.Core.Logging.Logger.LogWarning($"Invalid hex color '{hexColor}', using default gold color.");
                 return 16761035; // Default gold
             }
         }

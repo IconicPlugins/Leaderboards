@@ -9,6 +9,7 @@ namespace ICN.Leaderboards.Models
         public int Kills { get; set; }
         public int Deaths { get; set; }
         public int Headshots { get; set; }
+        public int Zombies { get; set; }
         public double Accuracy { get; set; }
         public long Playtime { get; set; }
 

@@ -34,7 +34,7 @@ namespace ICN.Leaderboards.Database
                     
                     // Validate and sanitize sort column
                     string orderByColumn = GetValidSortColumn(sortBy);
-                    string query = $"SELECT SteamId, Name, Kills, PVPDeaths, Headshots, Playtime FROM PlayerStats ORDER BY {orderByColumn} DESC LIMIT @Count";
+                    string query = $"SELECT SteamId, Name, Kills, PVPDeaths, Headshots, Zombies, Playtime FROM PlayerStats ORDER BY {orderByColumn} DESC LIMIT @Count";
                     
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
@@ -49,6 +49,7 @@ namespace ICN.Leaderboards.Database
                                     int kills = reader["Kills"] != DBNull.Value ? Convert.ToInt32(reader["Kills"]) : 0;
                                     int deaths = reader["PVPDeaths"] != DBNull.Value ? Convert.ToInt32(reader["PVPDeaths"]) : 0;
                                     int headshots = reader["Headshots"] != DBNull.Value ? Convert.ToInt32(reader["Headshots"]) : 0;
+                                    int zombies = reader["Zombies"] != DBNull.Value ? Convert.ToInt32(reader["Zombies"]) : 0;
                                     
                                     // Calculate accuracy as headshots/kills percentage
                                     double accuracy = kills > 0 ? (headshots / (double)kills) * 100.0 : 0.0;
@@ -60,6 +61,7 @@ namespace ICN.Leaderboards.Database
                                         Kills = kills,
                                         Deaths = deaths,
                                         Headshots = headshots,
+                                        Zombies = zombies,
                                         Accuracy = accuracy,
                                         Playtime = reader["Playtime"] != DBNull.Value ? Convert.ToInt64(reader["Playtime"]) : 0
                                     };

@@ -14,6 +14,7 @@ namespace ICN.Leaderboards
         public bool ShowPlaytime;
         public int AutoPostIntervalMinutes; // 0 = disabled
         public string EmbedColor; // Hex color code
+        public string LastMessageId; // For editing instead of creating new messages
 
         public void LoadDefaults()
         {
@@ -27,6 +28,7 @@ namespace ICN.Leaderboards
             ShowPlaytime = false;
             AutoPostIntervalMinutes = 30; // Auto-post every 30 minutes
             EmbedColor = "#FFD700"; // Gold
+            LastMessageId = ""; // Will be set after first post
         }
     }
 }

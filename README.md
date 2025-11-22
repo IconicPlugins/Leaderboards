@@ -1,6 +1,6 @@
 # 🏆 ICN.Leaderboards - Discord Leaderboard Integration
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/IconicPlugins/Leaderboards/releases)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/IconicPlugins/Leaderboards/releases)
 [![Unturned](https://img.shields.io/badge/Unturned-3.x-green.svg)](https://store.steampowered.com/app/304930/Unturned/)
 [![RocketMod](https://img.shields.io/badge/RocketMod-4.x-orange.svg)](https://rocketmod.net/)
 [![.NET](https://img.shields.io/badge/.NET-Framework%204.8-purple.svg)](https://dotnet.microsoft.com/)
@@ -15,8 +15,11 @@ A modern Unturned RocketMod plugin that fetches player statistics from PlayerSta
 - **📊 Dynamic Leaderboards** - Fetch and display top players from PlayerStatsUI database
 - **🎨 Rich Discord Embeds** - Beautiful formatted leaderboards with medals, stats, and custom colors
 - **⚡ Async Operations** - Non-blocking database queries and webhook posting for optimal performance
-- **🔄 Auto-Posting** - Automatically post leaderboards at configurable intervals
+- **🔄 Auto-Posting** - Automatically post leaderboards at configurable intervals (default: 30 minutes)
+- **🚀 Startup Posting** - Auto-posts leaderboard 10 seconds after server starts
+- **✏️ Message Editing** - Updates existing Discord message instead of spamming new ones
 - **🎯 Flexible Sorting** - Sort by Kills, K/D Ratio, Headshots, Accuracy, or Playtime
+- **🧟 Zombie Kills** - Displays zombie kills alongside PVP stats
 
 ### Customization
 - **🎨 Custom Embed Colors** - Set your Discord embed color using hex codes
@@ -24,13 +27,15 @@ A modern Unturned RocketMod plugin that fetches player statistics from PlayerSta
 - **⏱️ Formatted Playtime** - Human-readable time format (hours/minutes)
 - **🎯 Toggle Stats** - Show/hide K/D ratio, accuracy, and playtime
 - **🏅 Medal System** - 🥇🥈🥉 medals for top 3 players
+- **💬 Enhanced Layout** - Two-line format per player for better readability
 
 ### Technical Excellence
 - **🔒 SQL Injection Protection** - Parameterized queries throughout
 - **🛡️ Robust Error Handling** - Comprehensive try-catch blocks with detailed logging
 - **✅ Null Safety** - Proper DBNull and null reference handling
-- **🔌 Connection Testing** - Automatic database connection verification on load
+- **💾 Message ID Persistence** - Stores Discord message ID for editing
 - **⏲️ Command Cooldown** - 5-second cooldown prevents spam
+- **🔌 No External Dependencies** - Uses WebClient (built into .NET Framework)
 
 ---
 
@@ -255,24 +260,34 @@ Ensure the webhook has permission to:
 ║                                       ║
 ║  🥇 PlayerOne                         ║
 ║  ⚔️ Kills: 1234 | ☠️ Deaths: 123     ║
-║  📊 K/D: 10.03 | 🎯 HS: 456          ║
-║  🎯 Acc: 37.0%                        ║
+║     | 📊 K/D: 10.03                   ║
+║  🎯 HS: 456 | 🎯 Acc: 37.0%          ║
+║     | 🧟 Zombies: 2500                ║
 ║                                       ║
 ║  🥈 PlayerTwo                         ║
 ║  ⚔️ Kills: 987 | ☠️ Deaths: 234      ║
-║  📊 K/D: 4.22 | 🎯 HS: 321           ║
-║  🎯 Acc: 32.5%                        ║
+║     | 📊 K/D: 4.22                    ║
+║  🎯 HS: 321 | 🎯 Acc: 32.5%          ║
+║     | 🧟 Zombies: 1800                ║
 ║                                       ║
 ║  🥉 PlayerThree                       ║
 ║  ⚔️ Kills: 765 | ☠️ Deaths: 189      ║
-║  📊 K/D: 4.05 | 🎯 HS: 234           ║
-║  🎯 Acc: 30.6%                        ║
+║     | 📊 K/D: 4.05                    ║
+║  🎯 HS: 234 | 🎯 Acc: 30.6%          ║
+║     | 🧟 Zombies: 1200                ║
 ║                                       ║
 ║  ... (and more)                       ║
 ║                                       ║
 ║  Sorted by Kills • Unturned Leaderboards
+║  🔄 Auto-updates every 30 minutes     ║
 ╚═══════════════════════════════════════╝
 ```
+
+**Features:**
+- ✅ Two-line format per player for better readability
+- ✅ Zombie kills displayed alongside PVP stats
+- ✅ Message editing - updates same message instead of creating new ones
+- ✅ Auto-posts on server startup and every 30 minutes
 
 ---
 
@@ -396,6 +411,26 @@ This plugin is licensed under the MIT License. See [LICENSE](LICENSE) for detail
 ---
 
 ## 🔄 Changelog
+
+### v1.1.0 (2025-11-22)
+
+**New Features:**
+- 🎯 Added zombie kills display to leaderboard
+- 🔄 Auto-post on server startup (10 seconds after load)
+- ✏️ Message editing - updates existing Discord message instead of creating new ones
+- 🎨 Enhanced PVP-focused embed with two-line format per player
+- 💾 Message ID persistence in configuration
+
+**Improvements:**
+- Better embed spacing and visual hierarchy
+- Improved stats organization (PVP stats / headshots+accuracy+zombies)
+- Removed broken thumbnail placeholder
+
+**Fixes:**
+- Fixed database schema compatibility (Name, PVPDeaths, Zombies columns)
+- Fixed System.Net.Http dependency issues
+- Fixed server crash on startup
+- Accuracy now calculated from headshots/kills ratio
 
 ### v1.0.0 (2025-11-22)
 

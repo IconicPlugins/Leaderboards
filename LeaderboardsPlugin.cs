@@ -17,6 +17,8 @@ namespace ICN.Leaderboards
         public DiscordWebhookSender WebhookSender { get; private set; }
         
         private float _autoPostTimer = 0f;
+        private float _startupPostTimer = 0f;
+        private bool _hasPostedOnStartup = false;
 
         protected override void Load()
         {
@@ -29,23 +31,21 @@ namespace ICN.Leaderboards
             Logger.Log($"Licensed to: {Provider.serverName}");
             Logger.Log("Copyright © 2025 Iconic Plugins. All Rights Reserved.");
 
-            DatabaseProvider = new MySQLDatabaseProvider(Configuration.Instance.MySQLConnectionString);
-            WebhookSender = new DiscordWebhookSender(Configuration.Instance.WebhookUrl);
-
-            // Test database connection
-            Task.Run(async () =>
+            try
             {
-                bool connected = await DatabaseProvider.TestConnectionAsync();
-                if (connected)
-                    Logger.Log("Successfully connected to MySQL database.");
-                else
-                    Logger.LogWarning("Failed to connect to MySQL database. Check your connection string.");
-            });
+                DatabaseProvider = new MySQLDatabaseProvider(Configuration.Instance.MySQLConnectionString);
+                WebhookSender = new DiscordWebhookSender(Configuration.Instance.WebhookUrl);
 
-            Logger.Log("ICN.Leaderboards loaded successfully!");
-            Logger.Log($"Leaderboard count: {Configuration.Instance.LeaderboardCount}");
-            Logger.Log($"Sort by: {Configuration.Instance.LeaderboardSortBy}");
-            Logger.Log($"Auto-post interval: {Configuration.Instance.AutoPostIntervalMinutes} minutes");
+                Logger.Log("ICN.Leaderboards loaded successfully!");
+                Logger.Log($"Leaderboard count: {Configuration.Instance.LeaderboardCount}");
+                Logger.Log($"Sort by: {Configuration.Instance.LeaderboardSortBy}");
+                Logger.Log($"Auto-post interval: {Configuration.Instance.AutoPostIntervalMinutes} minutes");
+                Logger.Log("Leaderboard will be posted to Discord in 10 seconds...");
+            }
+            catch (System.Exception ex)
+            {
+                Logger.LogError($"Failed to load ICN.Leaderboards: {ex.Message}");
+            }
         }
 
         protected override void Unload()
@@ -57,6 +57,20 @@ namespace ICN.Leaderboards
 
         private void FixedUpdate()
         {
+            // Post leaderboard 10 seconds after startup
+            if (!_hasPostedOnStartup)
+            {
+                _startupPostTimer += Time.fixedDeltaTime;
+                
+                if (_startupPostTimer >= 10f) // 10 seconds after load
+                {
+                    _hasPostedOnStartup = true;
+                    Logger.Log("Posting startup leaderboard to Discord...");
+                    PostLeaderboard();
+                }
+            }
+            
+            // Regular auto-posting
             if (Configuration.Instance.AutoPostIntervalMinutes > 0)
             {
                 _autoPostTimer += Time.fixedDeltaTime;
@@ -66,12 +80,12 @@ namespace ICN.Leaderboards
                 if (_autoPostTimer >= intervalSeconds)
                 {
                     _autoPostTimer = 0f;
-                    Task.Run(async () => await PostLeaderboardAsync());
+                    PostLeaderboard();
                 }
             }
         }
 
-        public async Task PostLeaderboardAsync()
+        public async void PostLeaderboard()
         {
             try
             {
@@ -80,11 +94,22 @@ namespace ICN.Leaderboards
                     Configuration.Instance.LeaderboardSortBy
                 );
                 
-                await WebhookSender.SendLeaderboardAsync(topPlayers, Configuration.Instance);
+                WebhookSender.SendLeaderboard(
+                    topPlayers,
+                    Configuration.Instance.LeaderboardSortBy,
+                    Configuration.Instance.ShowKDRatio,
+                    Configuration.Instance.ShowAccuracy,
+                    Configuration.Instance.ShowPlaytime,
+                    Configuration.Instance.EmbedColor,
+                    ref Configuration.Instance.LastMessageId
+                );
+                
+                // Save configuration to persist the message ID
+                Configuration.Save();
             }
             catch (System.Exception ex)
             {
-                Logger.LogException(ex, "Error posting leaderboard.");
+                Logger.LogError($"Error posting leaderboard: {ex.Message}");
             }
         }
     }
