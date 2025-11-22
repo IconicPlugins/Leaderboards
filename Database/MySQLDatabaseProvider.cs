@@ -34,7 +34,7 @@ namespace ICN.Leaderboards.Database
                     
                     // Validate and sanitize sort column
                     string orderByColumn = GetValidSortColumn(sortBy);
-                    string query = $"SELECT SteamId, PlayerName, Kills, Deaths, Headshots, Accuracy, Playtime FROM PlayerStats ORDER BY {orderByColumn} DESC LIMIT @Count";
+                    string query = $"SELECT SteamId, Name, Kills, PVPDeaths, Headshots, Playtime FROM PlayerStats ORDER BY {orderByColumn} DESC LIMIT @Count";
                     
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
@@ -46,14 +46,21 @@ namespace ICN.Leaderboards.Database
                             {
                                 try
                                 {
+                                    int kills = reader["Kills"] != DBNull.Value ? Convert.ToInt32(reader["Kills"]) : 0;
+                                    int deaths = reader["PVPDeaths"] != DBNull.Value ? Convert.ToInt32(reader["PVPDeaths"]) : 0;
+                                    int headshots = reader["Headshots"] != DBNull.Value ? Convert.ToInt32(reader["Headshots"]) : 0;
+                                    
+                                    // Calculate accuracy as headshots/kills percentage
+                                    double accuracy = kills > 0 ? (headshots / (double)kills) * 100.0 : 0.0;
+                                    
                                     var stats = new PlayerStats
                                     {
                                         SteamId = reader["SteamId"]?.ToString() ?? "Unknown",
-                                        PlayerName = reader["PlayerName"]?.ToString() ?? "Unknown Player",
-                                        Kills = reader["Kills"] != DBNull.Value ? Convert.ToInt32(reader["Kills"]) : 0,
-                                        Deaths = reader["Deaths"] != DBNull.Value ? Convert.ToInt32(reader["Deaths"]) : 0,
-                                        Headshots = reader["Headshots"] != DBNull.Value ? Convert.ToInt32(reader["Headshots"]) : 0,
-                                        Accuracy = reader["Accuracy"] != DBNull.Value ? Convert.ToDouble(reader["Accuracy"]) : 0.0,
+                                        PlayerName = reader["Name"]?.ToString() ?? "Unknown Player",
+                                        Kills = kills,
+                                        Deaths = deaths,
+                                        Headshots = headshots,
+                                        Accuracy = accuracy,
                                         Playtime = reader["Playtime"] != DBNull.Value ? Convert.ToInt64(reader["Playtime"]) : 0
                                     };
                                     
