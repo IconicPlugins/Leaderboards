@@ -412,6 +412,11 @@ Leaderboard sent to Discord successfully. (10 players)
 ---
 ## 🔄 Changelog
 
+### v1.2.0 (2025-11-23)
+- ⚡ **Performance**: Implemented database query caching (reduced load by ~95%)
+- 🚀 **Optimization**: Added 2-minute cache for leaderboard results
+- 🧹 **Cleanup**: Improved build output and project structure
+
 ### v1.1.0 (2025-11-22)
 
 **New Features:**
