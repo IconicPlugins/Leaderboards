@@ -1,3 +1,5 @@
+<div align="center">
+
 # 🏆 ICN.Leaderboards - Discord Leaderboard Integration
 
 [![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/IconicPlugins/Leaderboards/releases)
@@ -6,6 +8,25 @@
 [![.NET](https://img.shields.io/badge/.NET-Framework%204.8-purple.svg)](https://dotnet.microsoft.com/)
 
 A modern Unturned RocketMod plugin that fetches player statistics from PlayerStatsUI's MySQL database and posts beautiful, customizable leaderboards to Discord via webhooks.
+
+[Report Bug](https://github.com/IconicPlugins/Leaderboards/issues) · [Request Feature](https://github.com/IconicPlugins/Leaderboards/issues)
+
+</div>
+
+---
+
+## 📑 Table of Contents
+- [Features](#-features)
+- [Installation](#-installation)
+- [Commands](#-commands)
+- [Configuration](#-configuration)
+- [How It Works](#-how-it-works)
+- [Discord Webhook Setup](#-discord-webhook-setup)
+- [Permissions](#-permissions)
+- [Performance](#-performance)
+- [Troubleshooting](#-troubleshooting)
+- [Support](#-support)
+- [FAQ](#-faq)
 
 ---
 
@@ -389,29 +410,6 @@ Leaderboard sent to Discord successfully. (10 players)
 ```
 
 ---
-
-## 🤝 Support
-
-- **Issues:** [GitHub Issues](https://github.com/IconicPlugins/Leaderboards/issues)
-- **Discord:** [Iconic Plugins Community](https://discord.gg/iconicplugins)
-- **Documentation:** This README
-
----
-
-## 📝 License
-
-This plugin is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-## 🙏 Credits
-
-**Developed by:** Iconic Plugins  
-**For:** Unturned & RocketMod Community  
-**Special Thanks:** The RocketMod team, Unturned modding community, and PlayerStatsUI developers
-
----
-
 ## 🔄 Changelog
 
 ### v1.1.0 (2025-11-22)
@@ -497,4 +495,15 @@ A: Yes! Set `AutoPostIntervalMinutes` to `0` to disable automatic posting.
 
 ---
 
-**Made with ❤️ for the Unturned community**
+<div align="center">
+
+## 🤝 Support & Credits
+
+Developed by **Iconic Plugins** for the Unturned & RocketMod Community.
+Special Thanks to the RocketMod team, Unturned modding community, and PlayerStatsUI developers.
+
+For support, please visit our [Discord Server](https://discord.gg/ja8zvQ8EQP).
+
+**License**: Proprietary / All Rights Reserved.
+
+</div>
