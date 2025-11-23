@@ -19,6 +19,11 @@ namespace ICN.Leaderboards
         private float _autoPostTimer = 0f;
         private float _startupPostTimer = 0f;
         private bool _hasPostedOnStartup = false;
+        
+        // Leaderboard caching to reduce database load
+        private List<PlayerStats> _cachedLeaderboard;
+        private float _cacheExpiry = 0f;
+        private const float CACHE_DURATION = 120f; // 2 minutes cache
 
         protected override void Load()
         {
@@ -52,6 +57,7 @@ namespace ICN.Leaderboards
         {
             Logger.Log("ICN.Leaderboards unloaded successfully!");
             _autoPostTimer = 0f;
+            _cachedLeaderboard = null;
             Instance = null;
         }
 
@@ -89,10 +95,29 @@ namespace ICN.Leaderboards
         {
             try
             {
-                List<PlayerStats> topPlayers = await DatabaseProvider.GetTopPlayersAsync(
-                    Configuration.Instance.LeaderboardCount,
-                    Configuration.Instance.LeaderboardSortBy
-                );
+                // Use cached data if available and not expired
+                List<PlayerStats> topPlayers;
+                
+                if (_cachedLeaderboard == null || Time.time > _cacheExpiry)
+                {
+                    // Cache expired or doesn't exist, fetch fresh data
+                    topPlayers = await DatabaseProvider.GetTopPlayersAsync(
+                        Configuration.Instance.LeaderboardCount,
+                        Configuration.Instance.LeaderboardSortBy
+                    );
+                    
+                    // Update cache
+                    _cachedLeaderboard = topPlayers;
+                    _cacheExpiry = Time.time + CACHE_DURATION;
+                    
+                    Logger.Log($"Leaderboard data refreshed from database ({topPlayers.Count} players)");
+                }
+                else
+                {
+                    // Use cached data
+                    topPlayers = _cachedLeaderboard;
+                    Logger.Log($"Using cached leaderboard data ({topPlayers.Count} players)");
+                }
                 
                 WebhookSender.SendLeaderboard(
                     topPlayers,
