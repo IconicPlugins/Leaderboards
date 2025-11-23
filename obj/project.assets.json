@@ -146,6 +146,41 @@
           }
         }
       },
+      "RestoreMonarchy.RocketRedist/3.25.9": {
+        "type": "package",
+        "dependencies": {
+          "RestoreMonarchy.UnturnedRedist": "3.25.9"
+        },
+        "compile": {
+          "lib/net48/Rocket.API.dll": {},
+          "lib/net48/Rocket.Core.dll": {},
+          "lib/net48/Rocket.Unturned.dll": {}
+        },
+        "runtime": {
+          "lib/net48/_._": {}
+        }
+      },
+      "RestoreMonarchy.UnturnedRedist/3.25.9": {
+        "type": "package",
+        "compile": {
+          "lib/net48/Assembly-CSharp.dll": {
+            "related": ".xml"
+          },
+          "lib/net48/Newtonsoft.Json.dll": {},
+          "lib/net48/SDG.NetTransport.dll": {},
+          "lib/net48/UnityEngine.CoreModule.dll": {},
+          "lib/net48/UnityEngine.PhysicsModule.dll": {},
+          "lib/net48/UnityEngine.dll": {},
+          "lib/net48/UnityEx.dll": {},
+          "lib/net48/UnturnedDat.dll": {},
+          "lib/net48/com.rlabrecque.steamworks.net.dll": {}
+        },
+        "runtime": {
+          "lib/net48/_._": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.Buffers/4.5.1": {
         "type": "package",
         "frameworkAssemblies": [
@@ -417,6 +452,47 @@
         "portable.bouncycastle.nuspec"
       ]
     },
+    "RestoreMonarchy.RocketRedist/3.25.9": {
+      "sha512": "A5RT7Sv+W2MACMuYAm+16lSaDlF/Ex2Z9/tqfupvzRT1WhHHV3vjFZM+PxRBVYC0aeyX8uSu+KF3/TGF9Uk2hw==",
+      "type": "package",
+      "path": "restoremonarchy.rocketredist/3.25.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "icon.png",
+        "lib/net48/Rocket.API.dll",
+        "lib/net48/Rocket.Core.dll",
+        "lib/net48/Rocket.Unturned.dll",
+        "restoremonarchy.rocketredist.3.25.9.nupkg.sha512",
+        "restoremonarchy.rocketredist.nuspec"
+      ]
+    },
+    "RestoreMonarchy.UnturnedRedist/3.25.9": {
+      "sha512": "KaPWUWd7EvrFTziyvqPkEQuMawDVmHZgI8mSuiUOF4bN/C5ms8UNvp9l8ppVOyLLubvsqfEG5++mOsdQQuSEuw==",
+      "type": "package",
+      "path": "restoremonarchy.unturnedredist/3.25.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "icon.png",
+        "lib/net48/Assembly-CSharp.dll",
+        "lib/net48/Assembly-CSharp.xml",
+        "lib/net48/Newtonsoft.Json.dll",
+        "lib/net48/SDG.NetTransport.dll",
+        "lib/net48/UnityEngine.CoreModule.dll",
+        "lib/net48/UnityEngine.PhysicsModule.dll",
+        "lib/net48/UnityEngine.dll",
+        "lib/net48/UnityEx.dll",
+        "lib/net48/UnturnedDat.dll",
+        "lib/net48/com.rlabrecque.steamworks.net.dll",
+        "restoremonarchy.unturnedredist.3.25.9.nupkg.sha512",
+        "restoremonarchy.unturnedredist.nuspec"
+      ]
+    },
     "System.Buffers/4.5.1": {
       "sha512": "Rw7ijyl1qqRS0YQD/WycNst8hUUMgrMH4FCn1nNm27M4VxchZ1js3fVjQaANHO5f3sN4isvP4a+Met9Y4YomAg==",
       "type": "package",
@@ -610,7 +686,8 @@
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.8": [
       "MySql.Data >= 8.0.33",
-      "Newtonsoft.Json >= 13.0.1"
+      "Newtonsoft.Json >= 13.0.1",
+      "RestoreMonarchy.RocketRedist >= 3.*"
     ]
   },
   "packageFolders": {
@@ -670,6 +747,11 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.1, )"
+          },
+          "RestoreMonarchy.RocketRedist": {
+            "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "target": "Package",
+            "version": "[3.*, )"
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100\\RuntimeIdentifierGraph.json"
