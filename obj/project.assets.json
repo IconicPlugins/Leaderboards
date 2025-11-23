@@ -687,7 +687,8 @@
     ".NETFramework,Version=v4.8": [
       "MySql.Data >= 8.0.33",
       "Newtonsoft.Json >= 13.0.1",
-      "RestoreMonarchy.RocketRedist >= 3.*"
+      "RestoreMonarchy.RocketRedist >= 3.*",
+      "System.Threading.Tasks.Extensions >= 4.5.4"
     ]
   },
   "packageFolders": {
@@ -752,6 +753,10 @@
             "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "target": "Package",
             "version": "[3.*, )"
+          },
+          "System.Threading.Tasks.Extensions": {
+            "target": "Package",
+            "version": "[4.5.4, )"
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100\\RuntimeIdentifierGraph.json"

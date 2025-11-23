@@ -11,7 +11,7 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("Iconic Plugins")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Leaderboards plugin for Unturned")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.2.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2.0+422bea0ea503f1cc3e7f984f7d74bc5b730907bc")]
