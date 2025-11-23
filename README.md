@@ -1,6 +1,6 @@
 # 🏆 ICN.Leaderboards - Discord Leaderboard Integration
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/IconicPlugins/Leaderboards/releases)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/IconicPlugins/Leaderboards/releases)
 [![Unturned](https://img.shields.io/badge/Unturned-3.x-green.svg)](https://store.steampowered.com/app/304930/Unturned/)
 [![RocketMod](https://img.shields.io/badge/RocketMod-4.x-orange.svg)](https://rocketmod.net/)
 [![.NET](https://img.shields.io/badge/.NET-Framework%204.8-purple.svg)](https://dotnet.microsoft.com/)
@@ -60,6 +60,7 @@ A modern Unturned RocketMod plugin that fetches player statistics from PlayerSta
    │   │   └── ICN.Leaderboards.dll  ← Main plugin only
    │   └── Libraries/
    │       ├── MySql.Data.dll  ← MySQL dependencies (required)
+   │       ├── System.Threading.Tasks.Extensions.dll  ← Required for async operations
    │       ├── BouncyCastle.Crypto.dll
    │       ├── Google.Protobuf.dll
    │       ├── K4os.Compression.LZ4.dll
@@ -71,6 +72,7 @@ A modern Unturned RocketMod plugin that fetches player statistics from PlayerSta
 3. **Dependencies:**
    - **MySQL Dependencies (Required)**: Copy these to `Rocket/Libraries/`:
      - MySql.Data.dll
+     - System.Threading.Tasks.Extensions.dll (Required for async operations)
      - BouncyCastle.Crypto.dll
      - Google.Protobuf.dll
      - K4os.Compression.LZ4.dll
