@@ -165,6 +165,18 @@ Rocket/Plugins/ICN.Leaderboards/ICN.Leaderboards.configuration.xml
 </LeaderboardsConfiguration>
 ```
 
+### 🔄 Smart Configuration
+
+**Never lose your settings again!**
+This plugin includes a **Smart Configuration Migration** system. When you update the plugin:
+1. It automatically detects your old configuration version
+2. **Preserves** all your existing settings (Webhook URL, Database, etc.)
+3. Adds new features with default values
+4. Removes obsolete settings automatically
+
+You don't need to delete your config file when updating!
+
+
 ### Configuration Options
 
 | Option | Type | Default | Description |

@@ -4,6 +4,9 @@ namespace ICN.Leaderboards
 {
     public class LeaderboardsConfiguration : IRocketPluginConfiguration
     {
+        // Configuration version for migration tracking
+        public int ConfigVersion = 1; // v1: Initial version
+        
         public string WebhookUrl;
         public string MySQLConnectionString;
         public int LeaderboardCount;

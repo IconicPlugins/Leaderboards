@@ -29,12 +29,38 @@ namespace ICN.Leaderboards
         {
             Instance = this;
             
-            // Cool loading banner
             Logger.Log("╔═══════════════════════════════════════╗");
-            Logger.Log("║   Leaderboards by Iconic Plugins      ║");
+            Logger.Log("║    Leaderboards by Iconic Plugins     ║");
             Logger.Log("╚═══════════════════════════════════════╝");
             Logger.Log($"Licensed to: {Provider.serverName}");
             Logger.Log("Copyright © 2025 Iconic Plugins. All Rights Reserved.");
+            
+            // Migrate configuration if needed
+            const int CURRENT_CONFIG_VERSION = 1;
+            int configVersion = IconicPlugins.Shared.ConfigMigrator.GetConfigVersion(Configuration.Instance);
+            
+            if (IconicPlugins.Shared.ConfigMigrator.NeedsMigration(configVersion, CURRENT_CONFIG_VERSION))
+            {
+                IconicPlugins.Shared.MessageHelper.LogWarning("LEADERBOARDS", $"Configuration version {configVersion} detected, migrating to version {CURRENT_CONFIG_VERSION}...");
+                
+                // Create new config with defaults
+                var newConfig = new LeaderboardsConfiguration();
+                newConfig.LoadDefaults();
+                
+                // Migrate user settings
+                var migratedConfig = IconicPlugins.Shared.ConfigMigrator.MigrateConfig(Configuration.Instance, newConfig);
+                IconicPlugins.Shared.ConfigMigrator.SetConfigVersion(migratedConfig, CURRENT_CONFIG_VERSION);
+                
+                // Replace configuration
+                Configuration.Instance = migratedConfig;
+                Configuration.Save();
+                
+                IconicPlugins.Shared.MessageHelper.LogSuccess("LEADERBOARDS", "Configuration migrated successfully! Your settings have been preserved.");
+            }
+            else if (configVersion == CURRENT_CONFIG_VERSION)
+            {
+                IconicPlugins.Shared.MessageHelper.LogInfo("LEADERBOARDS", $"Configuration is up to date (v{CURRENT_CONFIG_VERSION})");
+            }
 
             try
             {

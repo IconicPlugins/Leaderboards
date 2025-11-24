@@ -1,5 +1,13 @@
 # Changelog - ICN.Leaderboards
 
+## [1.2.1] - 2025-11-25
+
+### Added
+- 🔄 **Smart Configuration Migration**:
+  - Automatically preserves user settings when updating the plugin
+  - No need to delete `ICN.Leaderboards.configuration.xml` anymore!
+  - Automatically adds new fields and removes obsolete ones
+
 ## [1.2.0] - 2025-11-23
 
 ### Performance Optimizations 🗄️
