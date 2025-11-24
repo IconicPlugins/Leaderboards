@@ -2,7 +2,7 @@
 
 # 🏆 ICN.Leaderboards - Discord Leaderboard Integration
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/IconicPlugins/Leaderboards/releases)
+[![Version](https://img.shields.io/badge/version-1.2.1-blue.svg)](https://github.com/IconicPlugins/Leaderboards/releases)
 [![Unturned](https://img.shields.io/badge/Unturned-3.x-green.svg)](https://store.steampowered.com/app/304930/Unturned/)
 [![RocketMod](https://img.shields.io/badge/RocketMod-4.x-orange.svg)](https://rocketmod.net/)
 [![.NET](https://img.shields.io/badge/.NET-Framework%204.8-purple.svg)](https://dotnet.microsoft.com/)
@@ -423,6 +423,9 @@ Leaderboard sent to Discord successfully. (10 players)
 
 ---
 ## 🔄 Changelog
+
+### v1.2.1 (2025-11-25)
+- 🔄 **Smart Configuration**: Added automatic configuration migration system
 
 ### v1.2.0 (2025-11-23)
 - ⚡ **Performance**: Implemented database query caching (reduced load by ~95%)
