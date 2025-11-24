@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Leaderboards plugin for Unturned")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.2.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2.0+969e13f3cb370ddb0734e32ec5f160a55330acf8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.2.0+2a324eafd33bdc8625c42151fb660ad4c8f11b7f")]
 [assembly: System.Reflection.AssemblyProductAttribute("ICN.Leaderboards")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ICN.Leaderboards")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.2.0.0")]
