@@ -1,6 +1,6 @@
 # Changelog - ICN.Leaderboards
 
-## [1.2.1] - 2025-11-25
+## [1.2.2] - 2025-11-25
 
 ### Added
 - 🔄 **Smart Configuration Migration**:
